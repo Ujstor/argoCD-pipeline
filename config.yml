@@ -1,4 +1,4 @@
 docker:
   DOCKER_HUB_USERNAME: ujstor 
   DOCKER_REPO_NAME: portfolio-web-go
-  VERSION_PART: Minor # Patch, Minor, Major
+  VERSION_PART: Major # Patch, Minor, Major

@@ -1,6 +1,6 @@
 #!/bin/bash
 
-eval $(sudo yq e '.docker | to_entries | .[] | "export \(.key)=\(.value)"' config.yml)
+eval $(yq e '.docker | to_entries | .[] | "export \(.key)=\(.value)"' config.yml)
 
 DOCKER_IMAGE="$DOCKER_HUB_USERNAME/$DOCKER_REPO_NAME"
 
@@ -32,5 +32,12 @@ else
         exit 1
     fi
 fi
+# Set system variables
+export DOCKER_HUB_USERNAME
+export DOCKER_REPO_NAME
+export NEW_TAG
 
-echo $NEW_TAG
+# Output for verification
+echo "DOCKER_HUB_USERNAME: $DOCKER_HUB_USERNAME"
+echo "DOCKER_REPO_NAME: $DOCKER_REPO_NAME"
+echo "NEW_TAG: $NEW_TAG"
