@@ -28,7 +28,7 @@ jobs:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
 
-      - name: Install jq & yq
+      - name: Install yq
         run: |
           sudo wget https://github.com/mikefarah/yq/releases/latest/download/yq_linux_amd64 -O /usr/bin/yq 
           sudo chmod +x /usr/bin/yq
@@ -36,18 +36,20 @@ jobs:
       - name: Run docker tag sh and export var form config.yml
         run: |
           ./docker_tag.sh
-      
-      - name: Debug
-        run: |
-          cat .env
 
       - name: Load variables from .env file
         run: |
           export $(grep -v '^#' .env | xargs)
+
+      - name: Debug
+        run: |
+          DOCKER_HUB_USERNAME="$DOCKER_HUB_USERNAME"
+          DOCKER_REPO_NAME="$DOCKER_REPO_NAME"
+          NEW_TAG="$NEW_TAG"
 
       - name: Build and push
         uses: docker/build-push-action@v5
         with:
           context: .
           push: true
-          tags: ${{ env.DOCKER_HUB_USERNAME }}/${{ env.DOCKER_REPO_NAME }}:${{ env.NEW_TAG }}
+          tags: $DOCKER_HUB_USERNAME/$DOCKER_REPO_NAME:$NEW_TAG
