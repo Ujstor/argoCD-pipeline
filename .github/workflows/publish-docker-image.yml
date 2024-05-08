@@ -37,20 +37,26 @@ jobs:
         run: |
           ./docker_tag.sh
 
-      - name: Load variables from .env file
-        run: |
-          export $(grep -v '^#' .env | xargs)
-          source .env
+      - uses: cardinalby/export-env-action@v2
+        with:
+          envFile: '.env'
+
+      # - name: Import environment variables from a file
+      #   shell: bash
+      #   run: |
+      #     while read line; do
+      #       echo "$line" >> $GITHUB_ENV
+      #     done < ${{ env.ENV_FILE }}
 
       - name: Debug
         run: |
-          echo $DOCKER_HUB_USERNAME
-          echo $DOCKER_REPO_NAME
-          echo ${NEW_TAG}
+          echo ${env.DOCKER_REPO_NAME}
+          echo "${{ env.NEW_TAG }}"
+          echo $env.DOCKER_HUB_USERNAME
 
       - name: Build and push
         uses: docker/build-push-action@v5
         with:
           context: .
           push: true
-          tags: ${DOCKER_HUB_USERNAME}/${DOCKER_REPO_NAME}:${NEW_TAG}
+          tags: ${{ env.DOCKER_HUB_USERNAME }}/${{ env.DOCKER_REPO_NAME }}:${{ env.NEW_TAG }}
