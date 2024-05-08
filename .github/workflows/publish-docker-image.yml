@@ -30,18 +30,20 @@ jobs:
 
       - name: Install jq & yq
         run: |
-          wget https://github.com/mikefarah/yq/releases/latest/download/yq_linux_amd64 -O /usr/bin/yq && chmod +x /usr/bin/yq
-          sudo apt install -y jq 
+          sudo wget https://github.com/mikefarah/yq/releases/latest/download/yq_linux_amd64 -O /usr/bin/yq 
+          chmod +x /usr/bin/yq
 
       - name: Run docker tag sh and export var form config.yml
         run: |
-          source ./docker_tag.sh
+          ./docker_tag.sh
       
       - name: Debug
         run: |
-          echo "DOCKER_HUB_USERNAME: ${{ env.DOCKER_HUB_USERNAME }}"
-          echo "DOCKER_REPO_NAME: ${{ env.DOCKER_REPO_NAME }}"
-          echo "NEW_TAG: ${{ env.NEW_TAG }}"
+          cat .env
+
+      - name: Load variables from .env file
+        run: |
+          export $(grep -v '^#' .env | xargs)
 
       - name: Build and push
         uses: docker/build-push-action@v5
