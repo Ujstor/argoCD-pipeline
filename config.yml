@@ -1,4 +1,4 @@
 docker:
   DOCKER_HUB_USERNAME: ujstor 
   DOCKER_REPO_NAME: argocd-test
-  VERSION_PART: Patch # Patch, Minor, Major
+  VERSION_PART: Patch # Patch, Minor, major
