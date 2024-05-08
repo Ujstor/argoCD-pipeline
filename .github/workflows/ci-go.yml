@@ -2,10 +2,9 @@ name: continuous integration
 
 on:
   push:
-    paths:
-      - '**.go'
-      - go.sum
-      - go.mod
+    branches:
+      - master
+      - main
   pull_request:
 
 jobs:
