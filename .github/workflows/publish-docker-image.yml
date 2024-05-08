@@ -5,6 +5,7 @@ on:
     workflows: ["continuous integrationt"]
     branches:
       - main
+      - master
     types:
       - completed
 
