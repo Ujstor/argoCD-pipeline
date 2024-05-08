@@ -1,4 +1,4 @@
-# GitHub Actions for ArgoCD CICD pipeline
+# GitHub Actions Workflow for ArgoCD CICD pipeline
 
 ![pipline](public/pipeline.png)
 
@@ -10,7 +10,7 @@ Dependencies:
 - [yq](https://github.com/mikefarah/yq)
 - [jq](https://github.com/jqlang/jq)
 
-variables are defined in `config.yml`
+Variables are defined in `config.yml` and can be updated upon commit for new image tag:
 
 ```yaml
 docker:
@@ -18,6 +18,11 @@ docker:
   DOCKER_REPO_NAME:
   VERSION_PART:  # Patch, Minor, Major
 ```
+If the image does not exist, the default image tag is 0.0.1. Semantic versioning is employed upon commit, automatically incrementing the version
 
-Default image tag if image does not exist is 0.0.1
-On commit semantic versioning is used and the version is autmatically incremented
+Workflow also requires DockerHub login credentials, username and password configuration in the Action secret:
+
+```yaml
+username: ${{ secrets.DOCKERHUB_USERNAME }}
+password: ${{ secrets.DOCKERHUB_TOKEN }}
+```

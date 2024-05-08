@@ -1,0 +1,48 @@
+name: Update helm repo
+
+on:
+  workflow_run:
+    workflows: ["Publish Docker image"]
+    types:
+      - completed
+jobs:
+  update-helm-repo:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Install yq
+        run: |
+          sudo wget https://github.com/mikefarah/yq/releases/latest/download/yq_linux_amd64 -O /usr/bin/yq 
+          sudo chmod +x /usr/bin/yq
+
+      - name: Export var from config.yml
+        run: |
+          ./latest_tag.sh
+
+      - name: Export env variabels 
+        uses: cardinalby/export-env-action@v2
+        with:
+          envFile: '.env'
+
+      - name: Checkout helm repo
+        uses: actions/checkout@v4
+        with:
+          repository: ${{ env.REPO }} 
+
+      - name: Update chart values.yaml
+        run : |
+          sudo yq  -i '.deployment.tag = strenv(${{ env.LATEST_TAG }})'  ${{ env.CHART }}/values.yaml
+
+      - name: Debug
+        run: |
+          cat ${{ env.CHART }}/values.yaml
+
+      - name: Push changes to chart repo
+        run: |
+          git config --global user.email "<EMAIL>"
+          git config --global user.name "GitHub Action"
+          git add ${{ env.CHART }}/values.yaml
+          git commit -m "Update deployment image tag to ${{ env.LATEST_TAG }}"
+          git push -f origin master

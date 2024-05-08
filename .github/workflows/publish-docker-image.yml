@@ -33,11 +33,12 @@ jobs:
           sudo wget https://github.com/mikefarah/yq/releases/latest/download/yq_linux_amd64 -O /usr/bin/yq 
           sudo chmod +x /usr/bin/yq
 
-      - name: Run docker tag sh and export var form config.yml
+      - name: Run docker tag sh and export var from config.yml
         run: |
           ./docker_tag.sh
 
-      - uses: cardinalby/export-env-action@v2
+      - name: Export env variabels 
+        uses: cardinalby/export-env-action@v2
         with:
           envFile: '.env'
 

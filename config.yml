@@ -2,3 +2,8 @@ docker:
   DOCKER_HUB_USERNAME: ujstor 
   DOCKER_REPO_NAME: argocd-test
   VERSION_PART: Patch # Patch, Minor, major
+
+github-helm-repo:
+  REPO: Ujstor/argoCD-test-helm
+  CHART: http-server
+
