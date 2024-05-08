@@ -6,7 +6,7 @@ import (
 )
 
 func handler(w http.ResponseWriter, r *http.Request) {
-	html := `<html><head><title>Test2</title></head><body><h1>Welcome to Test1</h1></body></html>`
+	html := `<html><head><title>Test3</title></head><body><h1>Welcome to Test1</h1></body></html>`
 	_, err := w.Write([]byte(html))
 	if err != nil {
 		http.Error(w, "Error writing response", http.StatusInternalServerError)
