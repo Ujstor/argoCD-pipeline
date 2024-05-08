@@ -40,16 +40,17 @@ jobs:
       - name: Load variables from .env file
         run: |
           export $(grep -v '^#' .env | xargs)
+          source .env
 
       - name: Debug
         run: |
-          DOCKER_HUB_USERNAME="$DOCKER_HUB_USERNAME"
-          DOCKER_REPO_NAME="$DOCKER_REPO_NAME"
-          NEW_TAG="$NEW_TAG"
+          echo $DOCKER_HUB_USERNAME
+          echo $DOCKER_REPO_NAME
+          echo ${NEW_TAG}
 
       - name: Build and push
         uses: docker/build-push-action@v5
         with:
           context: .
           push: true
-          tags: $DOCKER_HUB_USERNAME/$DOCKER_REPO_NAME:$NEW_TAG
+          tags: ${DOCKER_HUB_USERNAME}/${DOCKER_REPO_NAME}:${NEW_TAG}
